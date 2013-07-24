@@ -11,48 +11,74 @@
 module.exports = function(grunt) {
 
 	var cp = require('child_process'),
-		log = grunt.log;
+		log = grunt.log,
+		childProcess,
+		script = "",
+		cmd = "";
 
-	grunt.registerMultiTask('blackberry_build', 'Your task description goes here.', function() {
+	grunt.registerMultiTask('bb_package_bar', 'Packages up a web project into a bar file', function() {
 
-		var data = this.data,
-			childProcess,
+		var options = this.options(),
 			done = this.async(),
-			script = "",
-			cmd = "";
-
-		var options = this.options();
+			data = this.data;
 
 		if (!options.sdk) {
 			log.error('Missing sdk property.');
 			return done(false);
 		}
 
-		if (this.target === "package_bar") {
-			if (data.src === undefined || data.dest === undefined) {
-				log.error('Source and Destination properties are required');
-				return done(false);
-			}
-			script = "bbwp";
-			cmd = "\"" + options.sdk + "/" + script + "\" " + data.src + " -o " + data.dest;
-			if (data.keypass) {
-				cmd += " -g " + data.keypass;
-			}
-			if (data.extras) {
-				cmd += " " + data.extras;
-			}
-		} else if (this.target === "deploy_bar") {
-			if (data.ip === undefined || data.bar === undefined) {
-				log.error('IP Address and Bar file are required ');
-				return done(false);
-			}
-			script = "dependencies/tools/bin/blackberry-deploy";
-			cmd = "\"" + options.sdk + "/" + script + "\" -installApp -device " + data.ip + " -package " + data.bar;
-			if (data.password) {
-				cmd += " -password " + data.password;
-			}
+		if (data.src === undefined || data.dest === undefined) {
+			log.error('Source and Destination properties are required');
+			return done(false);
+		}
+		script = "bbwp";
+		cmd = "\"" + options.sdk + "/" + script + "\" " + data.src + " -o " + data.dest;
+		if (data.keypass) {
+			cmd += " -g " + data.keypass;
+		}
+		if (data.flags) {
+			cmd += " " + data.flags;
 		}
 
+		if (data.simulate){
+			log.writeln(cmd);
+			done();
+		} else {
+			runScript(cmd, done);
+		}
+
+	});
+
+	grunt.registerMultiTask('bb_deploy_bar', 'Deploys a bar file to the device or simulator', function() {
+
+		var options = this.options(),
+			done = this.async(),
+			data = this.data;
+
+		if (!options.sdk) {
+			log.error('Missing sdk property.');
+			return done(false);
+		}
+
+		if (data.ip === undefined || data.bar === undefined) {
+			log.error('IP Address and Bar file are required ');
+			return done(false);
+		}
+		script = "dependencies/tools/bin/blackberry-deploy";
+		cmd = "\"" + options.sdk + "/" + script + "\" -installApp -device " + data.ip + " -package " + data.bar;
+		if (data.password) {
+			cmd += " -password " + data.password;
+		}
+
+		if (data.simulate){
+			log.writeln(cmd);
+			done();
+		} else {
+			runScript(cmd, done);
+		}
+	});
+
+	var runScript = function(script, done) {
 		grunt.log.writeln("Running script: " + cmd);
 		childProcess = cp.exec(cmd, {}, function() {
 		});
@@ -69,9 +95,8 @@ module.exports = function(grunt) {
 				log.error('Exited with code: %d.', code);
 				return done(false);
 			}
-
 			done();
 		});
-	});
+	};
 
 };

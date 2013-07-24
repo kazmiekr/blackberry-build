@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="1.0.0.0" id="SampleApp">
+
+    <author href="https://github.com/kazmiekr/blackberry-build">Kevin Kazmierczak</author>
+
+    <name>Grunt Plugin Sample App</name>
+
+    <description>
+        Sample app packaged and deployed by plugin tests
+    </description>
+
+    <content src="index.html"/>
+
+</widget>

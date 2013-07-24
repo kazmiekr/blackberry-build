@@ -10,44 +10,49 @@
 
 module.exports = function(grunt) {
 
-	// Project configuration.
+	var bbsdk = '/Developer/SDKs/Research In Motion/BlackBerry 10 WebWorks SDK 1.0.4.11';
+
 	grunt.initConfig({
+
 		jshint: {
 			all: [
 				'Gruntfile.js',
-				'tasks/*.js',
-				'<%= nodeunit.tests %>',
+				'tasks/*.js'
 			],
 			options: {
-				jshintrc: '.jshintrc',
-			},
-		},
-
-		// Before generating any new files, remove any previously-created files.
-		clean: {
-			tests: ['tmp']
-		},
-
-		// Configuration to be run (and then tested).
-		blackberry_build: {
-			options: {
-				sdk: '/Developer/SDKs/Research In Motion/BlackBerry 10 WebWorks SDK 1.0.4.11'
-			},
-			package_bar: {
-				src: '/Users/kevin/Desktop/Blackberry/WebMadBombz/public/',
-				dest: '/Users/kevin/Desktop/Blackberry/dist',
-				keypass: 'bbdna0',
-				extras: '-d -v'
-			},
-			deploy_bar: {
-				ip: '172.16.154.128',
-				bar: '/Users/kevin/Desktop/Blackberry/dist/device/public.bar'
+				jshintrc: '.jshintrc'
 			}
 		},
 
-		// Unit tests.
-		nodeunit: {
-			tests: ['test/*_test.js'],
+		bb_package_bar: {
+			options:{
+				sdk: bbsdk
+			},
+			with_password: {
+				src: 'test/sample',
+				dest: 'tmp',
+				keypass: 'MY_KEYPASS',
+				flags: '-d'
+			}
+		},
+
+		bb_deploy_bar: {
+			options: {
+				sdk: bbsdk
+			},
+			to_simulator: {
+				ip: '172.16.154.128',
+				bar: 'tmp/simulator/sample.bar'
+			},
+			to_device: {
+				ip: '169.254.0.1',
+				bar: 'tmp/device/sample.bar',
+				password: 'MY_DEVICE_PASSWORD'
+			}
+		},
+
+		clean: {
+			tests: ['tmp']
 		}
 
 	});
@@ -56,15 +61,12 @@ module.exports = function(grunt) {
 	grunt.loadTasks('tasks');
 
 	// These plugins provide necessary tasks.
-	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-contrib-nodeunit');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 
-	// Whenever the "test" task is run, first clean the "tmp" dir, then run this
-	// plugin's task(s), then test the result.
-	grunt.registerTask('test', ['clean', 'blackberry_build', 'nodeunit']);
+	grunt.registerTask('bbtest', ['clean', 'bb_package_bar', 'bb_deploy_bar']);
 
 	// By default, lint and run all tests.
-	grunt.registerTask('default', ['jshint', 'test']);
+	grunt.registerTask('default', ['jshint', 'bbtest']);
 
 };
