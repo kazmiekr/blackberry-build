@@ -29,10 +29,12 @@ module.exports = function(grunt) {
 				sdk: bbsdk
 			},
 			with_password: {
+				options:{
+					keypass: 'MY_KEYPASS',
+					flags: '-d'
+				},
 				src: 'test/sample',
-				dest: 'tmp',
-				keypass: 'MY_KEYPASS',
-				flags: '-d'
+				dest: 'tmp'
 			}
 		},
 
@@ -45,9 +47,11 @@ module.exports = function(grunt) {
 				bar: 'tmp/simulator/sample.bar'
 			},
 			to_device: {
+				options: {
+					password: 'MY_DEVICE_PASSWORD'
+				},
 				ip: '169.254.0.1',
-				bar: 'tmp/device/sample.bar',
-				password: 'MY_DEVICE_PASSWORD'
+				bar: 'tmp/device/sample.bar'
 			}
 		},
 

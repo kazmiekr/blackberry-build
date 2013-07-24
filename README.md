@@ -1,6 +1,6 @@
 # blackberry-build
 
-> Grunt plugin to package web apps using the BlackBerry Web Works SDK
+> Grunt plugin to package web apps using the BlackBerry Web Works SDK.  Includes two tasks, 'bb_package_bar' and 'bb_deploy_bar'.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
@@ -17,73 +17,97 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('blackberry-build');
 ```
 
-## The "blackberry_build" task
+## The "bb_package_bar" task
 
 ### Overview
-In your project's Gruntfile, add a section named `blackberry_build` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `bb_package_bar` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  blackberry_build: {
+  bb_package_bar: {
     options: {
-      // Task-specific options go here.
+    	sdk: 'PATH_TO_YOUR_WEBWORKS_SDK'
     },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
+    with_password: {
+    	options:{
+    		keypass: 'MY_KEYPASS',
+            flags: '-d'
+    	}
+		src: 'test/sample',
+		dest: 'tmp'
+	}
+  }
 })
 ```
 
 ### Options
 
-#### options.separator
+#### options.sdk
 Type: `String`
-Default value: `',  '`
+Default value: ``
 
-A string value that is used to do something with whatever.
+The path to your Web Works SDK
 
-#### options.punctuation
+#### options.keypass
 Type: `String`
-Default value: `'.'`
+Default value: ``
 
-A string value that is used to do something else with whatever else.
+Your certificate keypass used to sign the bar file
+
+#### options.flags
+Type: `String`
+Default value: ``
+
+Any additional script flags you'd like to pass, like '-d' to enable remote debugging
+
+### Properties
+
+#### src
+Type: `String`
+Default value: ``
+
+The project source to package
+
+#### dest
+Type: `String`
+Default value: ``
+
+The destination directory to output the device/simulator bar files
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
+#### Simple package example
+Package up the test/sample folder into the tmp directory
 ```js
 grunt.initConfig({
-  blackberry_build: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  blackberry_build: {
+  bb_package_bar: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+    	sdk: 'PATH_TO_YOUR_WEBWORKS_SDK'
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+    sample: {
+		src: 'test/sample',
+		dest: 'tmp'
+	}
+  }
 })
 ```
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-## Release History
-_(Nothing yet)_
+#### Package, Sign, and Add Flags
+Package up the test/sample folder into the tmp directory using a keypass for signing and an additional compiler flag
+```js
+grunt.initConfig({
+  bb_package_bar: {
+    options: {
+    	sdk: 'PATH_TO_YOUR_WEBWORKS_SDK'
+    },
+    with_password: {
+    	options:{
+    		keypass: 'MY_KEYPASS',
+            flags: '-d'
+    	}
+		src: 'test/sample',
+		dest: 'tmp'
+	}
+  }
+})
+```

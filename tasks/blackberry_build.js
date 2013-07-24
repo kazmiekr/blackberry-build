@@ -33,11 +33,11 @@ module.exports = function(grunt) {
 		}
 		script = "bbwp";
 		cmd = "\"" + options.sdk + "/" + script + "\" " + data.src + " -o " + data.dest;
-		if (data.keypass) {
-			cmd += " -g " + data.keypass;
+		if (options.keypass) {
+			cmd += " -g " + options.keypass;
 		}
-		if (data.flags) {
-			cmd += " " + data.flags;
+		if (options.flags) {
+			cmd += " " + options.flags;
 		}
 
 		if (data.simulate){
@@ -66,8 +66,8 @@ module.exports = function(grunt) {
 		}
 		script = "dependencies/tools/bin/blackberry-deploy";
 		cmd = "\"" + options.sdk + "/" + script + "\" -installApp -device " + data.ip + " -package " + data.bar;
-		if (data.password) {
-			cmd += " -password " + data.password;
+		if (options.password) {
+			cmd += " -password " + options.password;
 		}
 
 		if (data.simulate){
