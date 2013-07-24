@@ -111,3 +111,89 @@ grunt.initConfig({
   }
 })
 ```
+
+## The "bb_deploy_bar" task
+
+### Overview
+In your project's Gruntfile, add a section named `bb_deploy_bar` to the data object passed into `grunt.initConfig()`.
+
+```js
+grunt.initConfig({
+  bb_deploy_bar: {
+    options: {
+    	sdk: 'PATH_TO_YOUR_WEBWORKS_SDK'
+    },
+    sample: {
+    	options:{
+    		password: 'MY_DEVICE_PASSWORD'
+    	}
+		ip: '172.16.154.128',
+        bar: 'tmp/simulator/sample.bar'
+	}
+  }
+})
+```
+
+### Options
+
+#### options.sdk
+Type: `String`
+Default value: ``
+
+The path to your Web Works SDK
+
+#### options.password
+Type: `String`
+Default value: ``
+
+Your device password which you are deploying to
+
+### Properties
+
+#### ip
+Type: `String`
+Default value: ``
+
+The IP address of the device or the simulator you'd like to deploy the bar file to
+
+#### bar
+Type: `String`
+Default value: ``
+
+The bar file package you want to deploy
+
+### Usage Examples
+
+#### Simulator Deploy Example
+Deploy the simulator built bar file to the ip address supplied by your simulator
+```js
+grunt.initConfig({
+  bb_deploy_bar: {
+	options: {
+		sdk: 'PATH_TO_YOUR_WEBWORKS_SDK'
+	},
+	to_simulator: {
+		ip: '172.16.154.128',
+		bar: 'tmp/simulator/sample.bar'
+	}
+  }
+})
+```
+
+#### Device Deploy Example
+Deploy the device built bar file to the ip address of your device using your device password
+```js
+grunt.initConfig({
+  bb_deploy_bar: {
+		options: {
+			sdk: 'PATH_TO_YOUR_WEBWORKS_SDK'
+		},
+		to_device: {
+			options: {
+				password: 'MY_DEVICE_PASSWORD'
+			},
+			ip: '169.254.0.1',
+			bar: 'tmp/device/sample.bar'
+		}
+	}
+})
