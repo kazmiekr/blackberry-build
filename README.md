@@ -76,7 +76,7 @@ The destination directory to output the device/simulator bar files
 
 ### Usage Examples
 
-#### Simple package example
+#### Simple Package Example
 Package up the test/sample folder into the tmp directory
 ```js
 grunt.initConfig({
@@ -154,7 +154,7 @@ Your device password which you are deploying to
 Type: `String`
 Default value: ``
 
-The IP address of the device or the simulator you'd like to deploy the bar file to
+The ip address of the device or the simulator you'd like to deploy the bar file to
 
 #### bar
 Type: `String`
