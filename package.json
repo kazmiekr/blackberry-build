@@ -1,7 +1,7 @@
 {
   "name": "blackberry-build",
   "description": "Grunt plugin to package web apps using the BlackBerry Web Works SDK",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/kazmiekr/blackberry-build",
   "author": {
     "name": "Kevin Kazmierczak",
@@ -33,7 +33,7 @@
     "grunt": "~0.4.1"
   },
   "peerDependencies": {
-    "grunt": ">=0.4.0"
+    "grunt": ">=0.4.1"
   },
   "keywords": [
     "gruntplugin"
